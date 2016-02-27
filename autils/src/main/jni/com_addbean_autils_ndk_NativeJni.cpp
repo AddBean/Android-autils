@@ -6,10 +6,11 @@
 #include "utils.h"
 #include "stdio.h"
 #include <malloc.h>
-#include <jni.h>
+#include "jni.h"
 #include <effects_blur.h>
 #ifndef NATIVE_JNI
 #define NATIVE_JNI
+
  jclass _jClass;
  jobject _jObject;
  jmethodID _logeID, _toastID;

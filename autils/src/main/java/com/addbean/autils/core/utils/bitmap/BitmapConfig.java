@@ -21,7 +21,7 @@ public class BitmapConfig {
     private String DEFAULT_CACHE_PATH = "";
     private Context mContext;
     private String mDiskCachePath;
-    private HashMap<String, BitmapConfig> mHashMap = new HashMap<>();//每一个磁盘缓存地址对应一个config;
+    private HashMap<String, BitmapConfig> mHashMap = new HashMap<String, BitmapConfig>();//每一个磁盘缓存地址对应一个config;
 
     public BitmapConfig(Context context, String diskCachePath) {
         if (context == null)

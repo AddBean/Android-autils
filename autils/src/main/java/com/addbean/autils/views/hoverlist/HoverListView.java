@@ -35,7 +35,7 @@ public class HoverListView extends FrameLayout implements AbsListView.OnScrollLi
     private AListView mListView;
     private int mCurrentPosition = 0;
     private MultiAdapter mAdapter;
-    private List<ListItemEx> mData = new ArrayList<>();
+    private List<ListItemEx> mData = new ArrayList<ListItemEx>();
     private IHoverAdpterListener mAdpterListener;
     private int[] mTypeList;
     private Handler mHandler = new Handler() {
