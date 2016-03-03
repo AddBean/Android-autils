@@ -110,7 +110,7 @@ public class AListViewDemoActivity extends ActionBarActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //将布局inflate出来，然后获得布局上的控件，设置值
-            Log.e("getview", "getview");
+//            Log.e("getview", "getview");
             View view = LayoutInflater.from(AListViewDemoActivity.this).inflate(R.layout.item_1, null);
 
             TextView tvTitle = (TextView) view.findViewById(R.id.tv1);

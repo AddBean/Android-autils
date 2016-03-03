@@ -18,7 +18,8 @@
         <activity android:name=".demo.BlurDemoActivity" />
         <activity android:name=".demo.AListViewDemoActivity" />
         <activity android:name=".demo.BitmapCacheDemoActivity" />
-        <activity android:name=".demo.AWaveLayoutActivity"></activity>
+        <activity android:name=".demo.AWaveLayoutActivity" />
+        <activity android:name=".demo.adynamic_fragment.ADynamicFragmentActivity"></activity>
     </application>
 
 </manifest>

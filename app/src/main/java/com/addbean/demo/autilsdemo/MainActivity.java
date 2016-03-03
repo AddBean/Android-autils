@@ -17,6 +17,7 @@ import com.addbean.autils.utils.multiadapter.MultiAdapter;
 import com.addbean.autils.views.hoverlist.HoverListView;
 import com.addbean.autils.views.hoverlist.IHoverAdpterListener;
 import com.addbean.autils.views.listview.IOnPullListener;
+import com.addbean.demo.autilsdemo.demo.adynamic_fragment.ADynamicFragmentActivity;
 import com.addbean.demo.autilsdemo.demo.AListViewDemoActivity;
 import com.addbean.demo.autilsdemo.demo.AWaveLayoutActivity;
 import com.addbean.demo.autilsdemo.demo.BitmapCacheDemoActivity;
@@ -77,11 +78,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             mData.add(new ListItemEx(0, new MData("自定义控件")));
             mData.add(new ListItemEx(1, new MData("AListView")));
             mData.add(new ListItemEx(1, new MData("AWaveLayout")));
+            mData.add(new ListItemEx(1, new MData("ADynamicFragmentActivity")));
             mData.add(new ListItemEx(0, new MData("自定义效果")));
             mData.add(new ListItemEx(1, new MData("Blur")));
             mData.add(new ListItemEx(0, new MData("缓存框架")));
-            mData.add(new ListItemEx(1, new MData("Bitmap")));
-            mData.add(new ListItemEx(1, new MData("File")));
+//            mData.add(new ListItemEx(1, new MData("Bitmap")));
+//            mData.add(new ListItemEx(1, new MData("File")));
         }
 
 
@@ -97,7 +99,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                     @Override
                     protected Boolean doInBackground(Void... voids) {
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -107,7 +109,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                     @Override
                     protected void onPostExecute(Boolean aBoolean) {
                         super.onPostExecute(aBoolean);
-                        list.addData(0, new MData("自定义控件"));
                         list.setRefreshComplete();
                     }
                 };
@@ -120,7 +121,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                     @Override
                     protected Boolean doInBackground(Void... voids) {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -130,6 +131,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                     @Override
                     protected void onPostExecute(Boolean aBoolean) {
                         super.onPostExecute(aBoolean);
+                        list.addData(0, new MData("test"));
                         list.setLoadingComplete();
                     }
                 };
@@ -147,7 +149,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             case 3:
                 startActivity(new Intent(MainActivity.this, AWaveLayoutActivity.class));
                 break;
-            case 5:
+            case 4:
+                startActivity(new Intent(MainActivity.this, ADynamicFragmentActivity.class));
+                break;
+            case 6:
                 startActivity(new Intent(MainActivity.this, BlurDemoActivity.class));
                 break;
             case 7:

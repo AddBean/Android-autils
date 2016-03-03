@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="-"
+            android:text="32412342134"
             android:textSize="12dp" />
     </RelativeLayout>
 

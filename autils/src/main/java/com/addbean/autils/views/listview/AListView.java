@@ -275,14 +275,14 @@ public class AListView extends ListView implements AbsListView.OnScrollListener 
 
         if (firstVisibleItem == 0) {
             mIsRefreshUnlock = true;
-            Log.e("onScroll","到顶:");
+//            Log.e("onScroll","到顶:");
         } else {
             mIsRefreshUnlock = false;
             this.mHeaderView.setPadding(0, -1 * this.mHeaderOffset, 0, 0);
         }
 
         if (visibleItemCount + firstVisibleItem == totalItemCount&&firstVisibleItem != 0) {
-            Log.e("onScroll","到低");
+//            Log.e("onScroll","到低");
             mIsLoadingUnlock = true;
         } else {
             mIsLoadingUnlock = false;

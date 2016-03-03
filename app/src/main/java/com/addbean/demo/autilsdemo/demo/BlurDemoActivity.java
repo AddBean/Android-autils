@@ -1,5 +1,6 @@
 package com.addbean.demo.autilsdemo.demo;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -19,7 +20,7 @@ import org.w3c.dom.Text;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
-public class BlurDemoActivity extends ActionBarActivity {
+public class BlurDemoActivity extends Activity {
     NativeJni nativeJni;
     ImageView img;
 
