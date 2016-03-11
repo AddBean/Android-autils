@@ -1,1 +1,1 @@
-include ':app', ':autils'
+include ':app', ':autils', ':aviews'

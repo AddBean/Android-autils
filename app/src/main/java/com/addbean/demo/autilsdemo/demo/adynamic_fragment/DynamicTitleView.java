@@ -3,8 +3,8 @@ package com.addbean.demo.autilsdemo.demo.adynamic_fragment;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.addbean.autils.views.dynamic_fragment.ADynamicBaseSubFragment;
-import com.addbean.autils.views.dynamic_fragment.TabTitleView;
+import com.addbean.aviews.views.dynamic_fragment.ADynamicBaseSubFragment;
+import com.addbean.aviews.views.dynamic_fragment.TabTitleView;
 import com.addbean.demo.autilsdemo.R;
 
 /**

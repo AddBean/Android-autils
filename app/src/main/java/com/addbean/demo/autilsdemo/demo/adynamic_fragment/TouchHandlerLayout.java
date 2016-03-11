@@ -2,6 +2,7 @@ package com.addbean.demo.autilsdemo.demo.adynamic_fragment;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
@@ -25,40 +26,36 @@ public class TouchHandlerLayout extends LinearLayout {
     private float mMoveY;
     private float mTouchSlop = 50;
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mDownY = ev.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                mMoveY = ev.getY();
-                float diff = Math.abs(mMoveY - mDownY);
-                if (diff > mTouchSlop) {
-                    return true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-        return super.onInterceptTouchEvent(ev);
-    }
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                mDownY = ev.getRawY();
+//                mOnInterceptTouchEventListener.onMTouchEvent(ev);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                mMoveY = ev.getRawY();
+//                float diff = Math.abs(mMoveY - mDownY);
+//                if (diff > mTouchSlop) {
+//                    return true;
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                break;
+//        }
+//        return super.onInterceptTouchEvent(ev);
+//    }
+
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        if (mOnInterceptTouchEventListener != null)
-            return mOnInterceptTouchEventListener.onMTouchEvent(ev);
-        else
-            return super.onTouchEvent(ev);
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+
     }
 
-    private onInterceptTouchEventListener mOnInterceptTouchEventListener;
-
-    public void setmOnInterceptTouchEventListener(onInterceptTouchEventListener mOnInterceptTouchEventListener) {
-        this.mOnInterceptTouchEventListener = mOnInterceptTouchEventListener;
-    }
-
-    public interface onInterceptTouchEventListener {
-        public boolean onMTouchEvent(MotionEvent ev);
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        Log.e("TouchHandlerLayout","layout");
     }
 }

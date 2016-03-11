@@ -1,25 +1,20 @@
 package com.addbean.demo.autilsdemo.demo;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.addbean.autils.views.listview.AListView;
-import com.addbean.autils.views.listview.IOnPullListener;
+import com.addbean.aviews.views.listview.AListView;
+import com.addbean.aviews.views.listview.IOnPullListener;
 import com.addbean.demo.autilsdemo.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AListViewDemoActivity extends ActionBarActivity {
+public class AListViewDemoActivity extends Activity {
     private AListView mList;
     private String[] titles = {"1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2"};
 

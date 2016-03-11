@@ -6,11 +6,6 @@
     android:orientation="horizontal"
     android:gravity="center">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/consult_bg_2"/>
-
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
