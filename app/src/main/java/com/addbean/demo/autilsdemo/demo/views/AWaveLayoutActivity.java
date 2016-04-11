@@ -1,4 +1,4 @@
-package com.addbean.demo.autilsdemo.demo;
+package com.addbean.demo.autilsdemo.demo.views;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

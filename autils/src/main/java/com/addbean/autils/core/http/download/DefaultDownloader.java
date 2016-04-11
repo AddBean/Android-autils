@@ -24,13 +24,12 @@ public class DefaultDownloader extends AbsDownloader {
     }
 
     @Override
-    public long downloadToStream(String uri, OutputStream outputStream) {
+    public long downloadToStream(String uri, OutputStream outputStream, IDownloadListener downloadListener) {
         URLConnection urlConnection = null;
         BufferedInputStream bis = null;
 
         OtherUtils.trustAllHttpsURLConnection();
-
-        long result = -1;
+        downloadListener.downloadStart();
         long fileLen = 0;
         long currCount = 0;
         try {
@@ -49,8 +48,7 @@ public class DefaultDownloader extends AbsDownloader {
                 urlConnection.setConnectTimeout(this.getDefaultConnectTimeout());
                 urlConnection.setReadTimeout(this.getDefaultReadTimeout());
                 bis = new BufferedInputStream(urlConnection.getInputStream());
-//                result = urlConnection.getExpiration();
-//                fileLen = urlConnection.getContentLength();
+                fileLen = urlConnection.getContentLength();
             }
 
 
@@ -60,13 +58,15 @@ public class DefaultDownloader extends AbsDownloader {
             while ((len = bis.read(buffer)) != -1) {
                 out.write(buffer, 0, len);
                 currCount += len;
+                downloadListener.downloadUpdate(currCount, fileLen);
             }
             out.flush();
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
             try {
-                bis.close();
+                if (bis != null)
+                    bis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,4 +82,5 @@ public class DefaultDownloader extends AbsDownloader {
     private int getDefaultConnectTimeout() {
         return 10 * 1000;
     }
+
 }

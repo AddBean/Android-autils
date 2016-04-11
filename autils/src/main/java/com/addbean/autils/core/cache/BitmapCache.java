@@ -11,11 +11,9 @@ import com.addbean.autils.core.utils.bitmap.IBitmapConfig;
 import com.addbean.autils.tools.BitmapToolUtils;
 import com.addbean.autils.tools.MD5Utils;
 import com.addbean.autils.tools.OtherUtils;
-import com.addbean.autils.tools.ToolsUtils;
-import com.addbean.autils.utils.JLog;
+import com.addbean.autils.utils.ALog;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -23,19 +21,18 @@ import java.io.OutputStream;
  */
 public class BitmapCache {
     private Context mContext;
-    private Object mCacheLock = new Object();
+    private Object mDiskCacheLock = new Object();
+    private final Object mMemCacheLock = new Object();
     private DiskLruCache mDiskLruCache;
     private MemLruCache<MemCacheKey, Bitmap> mMemoryCache;
     private String TAG = "BitmapCache";
-    private final Object mDiskLock = new Object();
-    private final Object mMemLock = new Object();
 
     public BitmapCache(Context context) {
         this.mContext = context;
     }
 
     public void initMemCache(IBitmapConfig bitmapConfig) {
-        synchronized (mCacheLock) {
+        synchronized (mMemCacheLock) {
             if (!bitmapConfig.isMemEnable()) return;
             if (mMemoryCache != null) {
                 try {
@@ -56,7 +53,7 @@ public class BitmapCache {
 
 
     public void initDiskCache(IBitmapConfig bitmapConfig) {
-        synchronized (mCacheLock) {
+        synchronized (mDiskCacheLock) {
             if (!bitmapConfig.isDiskEnable() || mDiskLruCache != null)
                 return;
             File diskCacheDir = new File(bitmapConfig.getDiskCachePath());
@@ -64,6 +61,7 @@ public class BitmapCache {
                 long availableSpace = OtherUtils.getAvailableSpace(diskCacheDir);
                 long diskCacheSize = bitmapConfig.getDiskCacheSize();
                 diskCacheSize = availableSpace > diskCacheSize ? diskCacheSize : availableSpace;
+                ALog.debug("diskCacheSize:" + diskCacheSize);
                 try {
                     mDiskLruCache = DiskLruCache.open(diskCacheDir, 1, 1, diskCacheSize);
                     Log.e(TAG, "create disk cache success");
@@ -82,38 +80,49 @@ public class BitmapCache {
     public Bitmap getBitmapFromDisk(String uri, IBitmapConfig bitmapConfig) {
         if (!bitmapConfig.isDiskEnable())
             return null;
-        File diskCacheDir = new File(bitmapConfig.getDiskCachePath());
-        if (diskCacheDir.exists() || diskCacheDir.mkdirs()) {
-            DiskLruCache.Snapshot snapshot = null;
-            Bitmap bitmap = null;
-            try {
-                snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri));
-                if (snapshot == null) return null;
-                if (bitmapConfig.isShowOriginal()) {//是否显示原图；
-                    bitmap = BitmapToolUtils.decodeInputStream(snapshot.getInputStream(DISK_CACHE_INDEX));
-                } else {
-                    bitmap = BitmapToolUtils.decodeInputStreamWithSize(
-                            snapshot.getInputStream(DISK_CACHE_INDEX),
-                            bitmapConfig.getImageSize().getmMaxWidth(),
-                            bitmapConfig.getImageSize().getmMaxHeigh());
+        synchronized (mDiskCacheLock) {
+            File diskCacheDir = new File(bitmapConfig.getDiskCachePath());
+            if (diskCacheDir.exists() || diskCacheDir.mkdirs()) {
+                DiskLruCache.Snapshot snapshot = null;
+                Bitmap bitmap = null;
+                try {
+                    snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri));
+                    if (snapshot == null) return null;
+                    if (bitmapConfig.isShowOriginal() || bitmapConfig.getImageSize() == null) {//是否显示原图；
+                        bitmap = BitmapToolUtils.decodeInputStream(snapshot.getInputStream(DISK_CACHE_INDEX));
+                    } else {
+                        bitmap = BitmapToolUtils.decodeInputStreamWithSize(
+                                snapshot.getInputStream(DISK_CACHE_INDEX),
+                                bitmapConfig.getImageSize().getMaxWidth(),
+                                bitmapConfig.getImageSize().getMaxHeigh());
+                    }
+                    if (bitmap != null) ALog.debug(Thread.currentThread().getName() + "--从硬盘加载");
+
+                    if (bitmapConfig.isRotation())
+                        bitmap = BitmapToolUtils.rotateBitmap(bitmap, getCacheFileFromKey(bitmapConfig, MD5Utils.String2md5(uri)));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (bitmap != null) JLog.e(Thread.currentThread().getName() + "--从硬盘加载");
-//                if (bitmapConfig.isRotation())
-//                    bitmap = BitmapToolUtils.rotateBitmap(bitmap, );
-            } catch (Exception e) {
-                e.printStackTrace();
+                return bitmap;
             }
-            return bitmap;
+            return null;
         }
-        return null;
+    }
+
+
+    private File getCacheFileFromKey(IBitmapConfig bitmapConfig, String key) {
+        File file = new File(bitmapConfig.getDiskCachePath() + "/" + key + "." + DISK_CACHE_INDEX);
+        return file;
     }
 
     public Bitmap getBitmapFromMem(String uri, IBitmapConfig bitmapConfig) {
         if (mMemoryCache != null && bitmapConfig.isMemEnable()) {
-            MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri), bitmapConfig);
-            Bitmap bitmap = mMemoryCache.get(key);
-            if (bitmap != null) JLog.e(Thread.currentThread().getName() + "--从内存加载");
-            return bitmap;
+            synchronized (mMemCacheLock) {
+                MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri), bitmapConfig);
+                Bitmap bitmap = mMemoryCache.get(key);
+                if (bitmap != null) ALog.debug(Thread.currentThread().getName() + "--从内存加载");
+                return bitmap;
+            }
         }
         return null;
     }
@@ -121,7 +130,7 @@ public class BitmapCache {
     private final int DISK_CACHE_INDEX = 0;
 
     public void addBitmapToDisk(String uri, IBitmapConfig bitmapConfig, Bitmap bmp) {
-        synchronized (mCacheLock) {
+        synchronized (mDiskCacheLock) {
             if (!bitmapConfig.isDiskEnable())
                 return;
             try {
@@ -137,7 +146,7 @@ public class BitmapCache {
                             if (snapshot == null) {
                                 DiskLruCache.Editor editor = mDiskLruCache.edit(MD5Utils.String2md5(uri));
                                 if (editor != null) {
-                                    JLog.e(Thread.currentThread().getName() + "---载入磁盘缓存");
+//                                    ALog.e(Thread.currentThread().getName() + "---载入磁盘缓存");
                                     outputStream = editor.newOutputStream(DISK_CACHE_INDEX);
                                     bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                                     editor.commit();
@@ -160,16 +169,34 @@ public class BitmapCache {
 
     public void addBitmapToMem(String uri, IBitmapConfig bitmapConfig, Bitmap bmp) {
         MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri), bitmapConfig);
-        synchronized (mCacheLock) {
+        synchronized (mMemCacheLock) {
             if (!bitmapConfig.isMemEnable()) return;
             if (getBitmapFromMem(uri, bitmapConfig) == null) {
-                JLog.e(Thread.currentThread().getName() + "---载入内存缓存");
+                ALog.debug(Thread.currentThread().getName() + "---载入内存缓存");
                 mMemoryCache.put(key, bmp);
             }
         }
     }
 
 
-    private void clearMemCache() {
+    public void clearMemCache() {
+        if (mMemoryCache != null) {
+            mMemoryCache.evictAll();
+        }
     }
+
+    public void clearDiskCache() {
+        synchronized (mDiskCacheLock) {
+            if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
+                try {
+                    mDiskLruCache.delete();
+                    mDiskLruCache.close();
+                } catch (Throwable e) {
+                    ALog.e(e.getMessage(), e);
+                }
+                mDiskLruCache = null;
+            }
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.addbean.demo.autilsdemo.demo.adynamic_fragment;
+package com.addbean.demo.autilsdemo.demo.views.adynamic_fragment;
 
 import android.content.Context;
 import android.widget.TextView;

@@ -3,6 +3,7 @@ package com.addbean.autils.core.utils.bitmap;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.addbean.autils.core.cache.BitmapCache;
 import com.addbean.autils.core.http.download.AbsDownloader;
@@ -16,25 +17,27 @@ import java.util.HashMap;
  * Created by AddBean on 2016/2/3.
  */
 public class BitmapConfig implements IBitmapConfig {
-    private int MIN_CACHE_DISK = 2 * 1024 * 1024;//2m;
-    private int MIN_CACHE_MEM = 5 * 1024 * 1024;//5M;
+    private int mMinCacheDisk = 2 * 1024 * 1024;//2m;
+    private int mMinCacheMem = 5 * 1024 * 1024;//5M;
     private boolean mMemCacheEnable = true;
     private boolean mDiskCacheEnable = true;
     private boolean mRotation = true;
-    private TaskExecutors BITMAP_LOAD_EXECUTOR = new TaskExecutors();
-    private TaskExecutors BITMAP_CATCH_EXECUTOR = new TaskExecutors(2);
-    private String DEFAULT_CACHE_PATH = "";
+    private boolean mShowOriginal = false;
+    private BitmapImageSize mBitmapImageSize;
     private Context mContext;
     private String mDiskCachePath;
     public static HashMap<String, BitmapConfig> mHashMap = new HashMap<String, BitmapConfig>();//每一个磁盘缓存地址对应一个config;
     private static BitmapCache mBitmapCache;
+    private IBitmapCallback mOnCallbackListener;
+    private int mLoadingImage = -1;
+    private int mLoadingFailedImage = -1;
+    private int mLoadingEmptyImage = -1;
 
     public BitmapConfig(Context context, String diskCachePath) {
         if (context == null)
             throw new IllegalArgumentException("context can not be null!");
         this.mContext = context;
         this.mDiskCachePath = diskCachePath;
-        initConfig();
     }
 
     public static BitmapConfig getInstance(Context context, String diskCachePath) {
@@ -48,9 +51,6 @@ public class BitmapConfig implements IBitmapConfig {
         }
     }
 
-    private void initConfig() {
-    }
-
     @Override
     public TaskExecutors getBitmapThreadPool() {
         return null;
@@ -59,6 +59,16 @@ public class BitmapConfig implements IBitmapConfig {
     @Override
     public BitmapFactory getBitmapFactory() {
         return null;
+    }
+
+    @Override
+    public IBitmapCallback getCallbackListener() {
+        return this.mOnCallbackListener;
+    }
+
+    @Override
+    public void setCallbackListener(IBitmapCallback bitmapCallback) {
+        this.mOnCallbackListener = bitmapCallback;
     }
 
     @Override
@@ -95,21 +105,93 @@ public class BitmapConfig implements IBitmapConfig {
 
     @Override
     public boolean isShowOriginal() {
-        return false;
+        return this.mShowOriginal;
     }
 
     @Override
     public int getMemCacheSize() {
-        return MIN_CACHE_MEM;
+        return this.mMinCacheMem;
     }
 
     @Override
     public int getDiskCacheSize() {
-        return MIN_CACHE_DISK;
+        return this.mMinCacheDisk;
     }
 
     @Override
     public BitmapImageSize getImageSize() {
-        return new BitmapImageSize(100,100);
+        return mBitmapImageSize;
     }
+
+    @Override
+    public int getLoadingImage() {
+        return mLoadingImage;
+    }
+
+    @Override
+    public int getLoadingFailedImage() {
+        return mLoadingFailedImage;
+    }
+
+    @Override
+    public int getLoadingEmptyImage() {
+        return mLoadingEmptyImage;
+    }
+
+    @Override
+    public void setLoadingImage(int resId) {
+        this.mLoadingImage = resId;
+    }
+
+    @Override
+    public void setLoadingFailedImage(int resId) {
+        this.mLoadingFailedImage = resId;
+    }
+
+    @Override
+    public void setLoadingEmptyImage(int resId) {
+        this.mLoadingEmptyImage = resId;
+    }
+
+    @Override
+    public void setMinCacheDisk(int mMinCacheDisk) {
+        this.mMinCacheDisk = mMinCacheDisk;
+    }
+
+    @Override
+    public void setMinCacheMem(int mMinCacheMem) {
+        this.mMinCacheMem = mMinCacheMem;
+    }
+
+    @Override
+    public void setMemCacheEnable(boolean mMemCacheEnable) {
+        this.mMemCacheEnable = mMemCacheEnable;
+    }
+
+    @Override
+    public void setDiskCacheEnable(boolean mDiskCacheEnable) {
+        this.mDiskCacheEnable = mDiskCacheEnable;
+    }
+
+    @Override
+    public void setRotation(boolean mRotation) {
+        this.mRotation = mRotation;
+    }
+
+    @Override
+    public void setShowOriginal(boolean mShowOriginal) {
+        this.mShowOriginal = mShowOriginal;
+    }
+
+    @Override
+    public void setBitmapImageSize(BitmapImageSize mBitmapImageSize) {
+        this.mBitmapImageSize = mBitmapImageSize;
+    }
+
+    @Override
+    public void setDiskCachePath(String mDiskCachePath) {
+        this.mDiskCachePath = mDiskCachePath;
+    }
+
+
 }

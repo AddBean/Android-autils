@@ -12,18 +12,19 @@ import com.addbean.autils.core.utils.bitmap.BitmapDrawable;
 import com.addbean.autils.core.utils.bitmap.BitmapLoadTask;
 import com.addbean.autils.core.utils.bitmap.IBitmapCallback;
 import com.addbean.autils.core.utils.bitmap.IBitmapConfig;
+import com.addbean.autils.utils.ALog;
 
 /**
  * Created by AddBean on 2016/2/3.
  */
 
 
-public class BitmapUtils {
+public class ABitmapUtils {
     private Context mContext;
     private IBitmapConfig mBitmapConfig;
     private BitmapCache mBitmapCache;
 
-    public BitmapUtils(Context mContext) {
+    public ABitmapUtils(Context mContext) {
         this.mContext = mContext;
         getBitmapConfig();
         mBitmapCache = mBitmapConfig.getBitmapCache();
@@ -55,6 +56,8 @@ public class BitmapUtils {
 
     public <T extends View> void load(T view, String uri, IBitmapCallback mBitamCallback) {
         Bitmap bmp1 = mBitmapCache.getBitmapFromMem(uri, mBitmapConfig);
+        if (mBitmapConfig != null)
+            mBitmapConfig.setCallbackListener(mBitamCallback);
         if (bmp1 != null) {
             displayBitmap(view, bmp1);
             return;
@@ -64,8 +67,14 @@ public class BitmapUtils {
         }
     }
 
+
+    public void setOnCallbackListener(IBitmapCallback bitmapCallback) {
+        if (mBitmapConfig != null)
+            mBitmapConfig.setCallbackListener(bitmapCallback);
+    }
+
     private <T extends View> BitmapLoadTask getNewBitmapTask(T view, String uri, IBitmapCallback mBitamCallback) {
-        BitmapLoadTask bitmapLoadTask = new BitmapLoadTask(view, uri, mBitmapConfig, mBitamCallback);
+        BitmapLoadTask bitmapLoadTask = new BitmapLoadTask(view, uri, mBitmapConfig);
         BitmapDrawable drawable = new BitmapDrawable(null, bitmapLoadTask);
         if (view instanceof ImageView) {
             ((ImageView) view).setImageDrawable(drawable);
@@ -80,8 +89,10 @@ public class BitmapUtils {
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             BitmapLoadTask task = bitmapDrawable.getBitmapWorkerTask();
-            if (task != null)
+            if (task != null) {
+                ALog.debug("任务已存在");
                 return true;
+            }
         }
         return false;
     }
@@ -92,8 +103,9 @@ public class BitmapUtils {
         }
     }
 
-    private IBitmapConfig getBitmapConfig() {
-        setBitmapConfig(BitmapConfig.getInstance(mContext, getDefaultDiskPath()));
+    public IBitmapConfig getBitmapConfig() {
+        if (mBitmapConfig == null)
+            setBitmapConfig(BitmapConfig.getInstance(mContext, getDefaultDiskPath()));
         return mBitmapConfig;
     }
 

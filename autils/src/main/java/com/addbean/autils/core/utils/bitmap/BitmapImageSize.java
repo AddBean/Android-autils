@@ -12,19 +12,19 @@ public class BitmapImageSize {
         this.mMaxHeigh = mMaxHeigh;
     }
 
-    public int getmMaxWidth() {
+    public int getMaxWidth() {
         return mMaxWidth;
     }
 
-    public void setmMaxWidth(int mMaxWidth) {
+    public void setMaxWidth(int mMaxWidth) {
         this.mMaxWidth = mMaxWidth;
     }
 
-    public int getmMaxHeigh() {
+    public int getMaxHeigh() {
         return mMaxHeigh;
     }
 
-    public void setmMaxHeigh(int mMaxHeigh) {
+    public void setMaxHeigh(int mMaxHeigh) {
         this.mMaxHeigh = mMaxHeigh;
     }
 }

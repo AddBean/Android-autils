@@ -17,11 +17,12 @@ import com.addbean.aviews.utils.multiadapter.MultiAdapter;
 import com.addbean.aviews.views.hoverlist.HoverListView;
 import com.addbean.aviews.views.hoverlist.IHoverAdpterListener;
 import com.addbean.aviews.views.listview.IOnPullListener;
-import com.addbean.demo.autilsdemo.demo.adynamic_fragment.ADynamicFragmentActivity;
-import com.addbean.demo.autilsdemo.demo.AListViewDemoActivity;
-import com.addbean.demo.autilsdemo.demo.AWaveLayoutActivity;
-import com.addbean.demo.autilsdemo.demo.bitmap_cache.BitmapCacheDemoActivity;
-import com.addbean.demo.autilsdemo.demo.BlurDemoActivity;
+import com.addbean.demo.autilsdemo.demo.views.adynamic_fragment.ADynamicFragmentActivity;
+import com.addbean.demo.autilsdemo.demo.views.AListViewDemoActivity;
+import com.addbean.demo.autilsdemo.demo.views.ATimeIconViewActivity;
+import com.addbean.demo.autilsdemo.demo.views.AWaveLayoutActivity;
+import com.addbean.demo.autilsdemo.demo.fromwork.bitmap_cache.BitmapCacheDemoActivity;
+import com.addbean.demo.autilsdemo.demo.effect.BlurDemoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             mData.add(new ListItemEx(1, new MData("AListView")));
             mData.add(new ListItemEx(1, new MData("AWaveLayout")));
             mData.add(new ListItemEx(1, new MData("ADynamicFragmentActivity")));
+            mData.add(new ListItemEx(1, new MData("ATimeIconView")));
             mData.add(new ListItemEx(0, new MData("自定义效果")));
             mData.add(new ListItemEx(1, new MData("Blur")));
             mData.add(new ListItemEx(0, new MData("缓存框架")));
@@ -152,10 +154,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             case 4:
                 startActivity(new Intent(MainActivity.this, ADynamicFragmentActivity.class));
                 break;
-            case 6:
+            case 5:
+                startActivity(new Intent(MainActivity.this, ATimeIconViewActivity.class));
+                break;
+            case 7:
                 startActivity(new Intent(MainActivity.this, BlurDemoActivity.class));
                 break;
-            case 8:
+            case 9:
                 startActivity(new Intent(MainActivity.this, BitmapCacheDemoActivity.class));
                 break;
 

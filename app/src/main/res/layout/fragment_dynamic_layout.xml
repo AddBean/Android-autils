@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.addbean.demo.autilsdemo.demo.adynamic_fragment.TouchHandlerLayout
+    <com.addbean.demo.autilsdemo.demo.views.adynamic_fragment.TouchHandlerLayout
         android:id="@+id/content_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,7 +54,7 @@
             android:id="@+id/content_viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </com.addbean.demo.autilsdemo.demo.adynamic_fragment.TouchHandlerLayout>
+    </com.addbean.demo.autilsdemo.demo.views.adynamic_fragment.TouchHandlerLayout>
 
 
 </LinearLayout>

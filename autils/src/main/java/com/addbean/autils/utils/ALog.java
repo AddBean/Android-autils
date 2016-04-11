@@ -3,6 +3,7 @@ package com.addbean.autils.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.addbean.autils.DebugConfig;
 import com.addbean.autils.tools.OtherUtils;
 
 import java.lang.reflect.Field;
@@ -13,10 +14,10 @@ import java.util.Date;
 /**
  * Created by AddBean on 2016/2/16.
  */
-public class JLog {
+public class ALog {
     public static void e(Object obj) {
         try {
-            Log.e("JLog", obj.getClass().getName() + ":\n" + getMateByReflect(obj));
+            Log.e("ALog", obj.getClass().getName() + ":\n" + getMateByReflect(obj));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -83,7 +84,7 @@ public class JLog {
 
     public static String customTagPrefix = "";
 
-    private JLog() {
+    private ALog() {
     }
 
     public static boolean allowD = true;
@@ -180,6 +181,11 @@ public class JLog {
         } else {
             Log.e(tag, content, tr);
         }
+    }
+
+    public static void debug(Object object) {
+        if (DebugConfig._debug_enable)
+            ALog.e(object);
     }
 
     public static void i(String content) {

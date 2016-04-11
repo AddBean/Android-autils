@@ -1,7 +1,6 @@
-package com.addbean.demo.autilsdemo.demo.adynamic_fragment;
+package com.addbean.demo.autilsdemo.demo.views.adynamic_fragment;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;

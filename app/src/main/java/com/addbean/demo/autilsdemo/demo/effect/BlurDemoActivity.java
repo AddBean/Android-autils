@@ -1,4 +1,4 @@
-package com.addbean.demo.autilsdemo.demo;
+package com.addbean.demo.autilsdemo.demo.effect;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
