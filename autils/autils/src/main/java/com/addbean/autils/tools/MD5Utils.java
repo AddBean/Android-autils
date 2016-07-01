@@ -11,8 +11,11 @@ public class MD5Utils {
     /**
      * 使用md5的算法进行加密
      */
-    public static String String2md5(String plainText,String key
-    ) {
+    public static String String2md5(String plainText,String key) {
+        return String2md5(plainText+key);
+    }
+
+    public static String String2md5(String plainText) {
         byte[] secretBytes = null;
         try {
             secretBytes = MessageDigest.getInstance("md5").digest(plainText.getBytes());
@@ -25,5 +28,4 @@ public class MD5Utils {
         }
         return md5code;
     }
-
 }
