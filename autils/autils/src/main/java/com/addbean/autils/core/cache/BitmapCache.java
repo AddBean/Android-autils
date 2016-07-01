@@ -86,7 +86,7 @@ public class BitmapCache {
                 DiskLruCache.Snapshot snapshot = null;
                 Bitmap bitmap = null;
                 try {
-                    snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri));
+                    snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri,bitmapConfig.getExtraKey()));
                     if (snapshot == null) return null;
                     if (bitmapConfig.isShowOriginal() || bitmapConfig.getImageSize() == null) {//是否显示原图；
                         bitmap = BitmapToolUtils.decodeInputStream(snapshot.getInputStream(DISK_CACHE_INDEX));
@@ -99,7 +99,7 @@ public class BitmapCache {
                     if (bitmap != null)
                         ALog.debug(Thread.currentThread().getName() + "--从磁盘加载");
                     if (bitmapConfig.isRotation())
-                        bitmap = BitmapToolUtils.rotateBitmap(bitmap, getCacheFileFromKey(bitmapConfig, MD5Utils.String2md5(uri)));
+                        bitmap = BitmapToolUtils.rotateBitmap(bitmap, getCacheFileFromKey(bitmapConfig, MD5Utils.String2md5(uri,bitmapConfig.getExtraKey())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -118,7 +118,7 @@ public class BitmapCache {
     public Bitmap getBitmapFromMem(String uri, IBitmapConfig bitmapConfig) {
         if (mMemoryCache != null && bitmapConfig.isMemEnable()) {
             synchronized (mMemCacheLock) {
-                MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri), bitmapConfig);
+                MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri,bitmapConfig.getExtraKey()), bitmapConfig);
                 Bitmap bitmap = mMemoryCache.get(key);
                 if (bitmap != null)
                     ALog.debug(Thread.currentThread().getName() + "--从内存加载");
@@ -143,9 +143,9 @@ public class BitmapCache {
                     DiskLruCache.Snapshot snapshot = null;
                     if (mDiskLruCache != null) {
                         try {
-                            snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri));
+                            snapshot = mDiskLruCache.get(MD5Utils.String2md5(uri,bitmapConfig.getExtraKey()));
                             if (snapshot == null) {
-                                DiskLruCache.Editor editor = mDiskLruCache.edit(MD5Utils.String2md5(uri));
+                                DiskLruCache.Editor editor = mDiskLruCache.edit(MD5Utils.String2md5(uri,bitmapConfig.getExtraKey()));
                                 if (editor != null) {
 //                                    ALog.e(Thread.currentThread().getName() + "---载入磁盘缓存");
                                     outputStream = editor.newOutputStream(DISK_CACHE_INDEX);
@@ -169,7 +169,7 @@ public class BitmapCache {
     }
 
     public void addBitmapToMem(String uri, IBitmapConfig bitmapConfig, Bitmap bmp) {
-        MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri), bitmapConfig);
+        MemCacheKey key = new MemCacheKey(MD5Utils.String2md5(uri,bitmapConfig.getExtraKey()), bitmapConfig);
         synchronized (mMemCacheLock) {
             if (!bitmapConfig.isMemEnable()) return;
             if (getBitmapFromMem(uri, bitmapConfig) == null) {

@@ -39,6 +39,8 @@ public interface IBitmapConfig {
 
     public BitmapImageSize getImageSize();//获取图片大小；
 
+    public String getExtraKey();
+
     public int getLoadingImage();
 
     public int getLoadingFailedImage();
@@ -67,4 +69,5 @@ public interface IBitmapConfig {
 
     public void setDiskCachePath(String mDiskCachePath);
 
+    public void setExtraKey(String key);
 }

@@ -32,6 +32,7 @@ public class BitmapConfig implements IBitmapConfig {
     private int mLoadingImage = -1;
     private int mLoadingFailedImage = -1;
     private int mLoadingEmptyImage = -1;
+    private String mExtraKey = "";
 
     public BitmapConfig(Context context, String diskCachePath) {
         if (context == null)
@@ -124,6 +125,11 @@ public class BitmapConfig implements IBitmapConfig {
     }
 
     @Override
+    public String getExtraKey() {
+        return this.mExtraKey;
+    }
+
+    @Override
     public int getLoadingImage() {
         return mLoadingImage;
     }
@@ -191,6 +197,11 @@ public class BitmapConfig implements IBitmapConfig {
     @Override
     public void setDiskCachePath(String mDiskCachePath) {
         this.mDiskCachePath = mDiskCachePath;
+    }
+
+    @Override
+    public void setExtraKey(String key) {
+        this.mExtraKey = key;
     }
 
 

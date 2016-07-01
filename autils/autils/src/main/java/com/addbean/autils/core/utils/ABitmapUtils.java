@@ -51,7 +51,13 @@ public class ABitmapUtils {
      * --------|非空，回调并加载位图；
      */
     public <T extends View> void load(T view, String uri) {
-        load(view, uri, null);
+        load(view, uri, (IBitmapCallback) null);
+    }
+
+    public <T extends View> void load(T view, String uri, String key) {
+        if (mBitmapConfig != null && key != null)
+            mBitmapConfig.setExtraKey(key);
+        load(view, uri, (IBitmapCallback) null);
     }
 
     public <T extends View> void load(T view, String uri, IBitmapCallback mBitamCallback) {
