@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="ACheckBox">
-        <attr name="image_unselected" format="reference" />
-        <attr name="image_selected" format="reference" />
-        <attr name="select_state" format="boolean" />
-    </declare-styleable>
-</resources>
