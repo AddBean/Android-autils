@@ -17,6 +17,7 @@ import com.addbean.aviews.utils.multiadapter.MultiAdapter;
 import com.addbean.aviews.views.hoverlist.HoverListView;
 import com.addbean.aviews.views.hoverlist.IHoverAdpterListener;
 import com.addbean.aviews.views.listview.IOnPullListener;
+import com.addbean.demo.autilsdemo.demo.fromwork.HttpCacheDemoActivity;
 import com.addbean.demo.autilsdemo.demo.views.adynamic_fragment.ADynamicFragmentActivity;
 import com.addbean.demo.autilsdemo.demo.views.AListViewDemoActivity;
 import com.addbean.demo.autilsdemo.demo.views.ATimeIconViewActivity;
@@ -85,7 +86,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             mData.add(new ListItemEx(1, new MData("Blur")));
             mData.add(new ListItemEx(0, new MData("缓存框架")));
             mData.add(new ListItemEx(1, new MData("Bitmap")));
-            mData.add(new ListItemEx(1, new MData("File")));
+            mData.add(new ListItemEx(1, new MData("http")));
         }
 
 
@@ -163,7 +164,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             case 9:
                 startActivity(new Intent(MainActivity.this, BitmapCacheDemoActivity.class));
                 break;
-
+            case 10:
+                startActivity(new Intent(MainActivity.this, HttpCacheDemoActivity.class));
+                break;
         }
     }
 

@@ -43,7 +43,7 @@ public class BitmapCacheDemoActivity extends Activity {
             @Override
             public void convert(AdapterHelper helper, MultiAdapter.ConvertViewInf data) {
                 final String url = (String) data.getData();
-                mBitmapUtils.load(data.getView().findViewById(R.id.image_1), url, new IBitmapCallback() {
+                mBitmapUtils.load(data.getView().findViewById(R.id.image_1), url,null, new IBitmapCallback() {
                     @Override
                     public void onPreLoad(View container, String uri, IBitmapConfig config) {
                         ALog.debug("onPreLoad");

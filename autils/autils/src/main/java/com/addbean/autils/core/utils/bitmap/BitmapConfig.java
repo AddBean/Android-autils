@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by AddBean on 2016/2/3.
  */
 public class BitmapConfig implements IBitmapConfig {
-    private int mMinCacheDisk = 2 * 1024 * 1024;//2m;
+    private int mMinCacheDisk = 50 * 1024 * 1024;//2m;
     private int mMinCacheMem = 5 * 1024 * 1024;//5M;
     private boolean mMemCacheEnable = true;
     private boolean mDiskCacheEnable = true;
@@ -26,7 +26,7 @@ public class BitmapConfig implements IBitmapConfig {
     private BitmapImageSize mBitmapImageSize;
     private Context mContext;
     private String mDiskCachePath;
-    public static HashMap<String, BitmapConfig> mHashMap = new HashMap<String, BitmapConfig>();//每一个磁盘缓存地址对应一个config;
+    public static HashMap<String, BitmapConfig> mHashMap = new HashMap<>();//每一个磁盘缓存地址对应一个config;
     private static BitmapCache mBitmapCache;
     private IBitmapCallback mOnCallbackListener;
     private int mLoadingImage = -1;
@@ -45,11 +45,12 @@ public class BitmapConfig implements IBitmapConfig {
         if (TextUtils.isEmpty(diskCachePath))
             diskCachePath = OtherUtils.getDiskCacheDir(context, "aBitmapCache");
         if (mHashMap.containsKey(diskCachePath)) {
-            return mHashMap.get(diskCachePath);
+//            return mHashMap.get(diskCachePath);
         } else {
             mHashMap.put(diskCachePath, new BitmapConfig(context, diskCachePath));
-            return mHashMap.get(diskCachePath);
+//            return mHashMap.get(diskCachePath);
         }
+        return new BitmapConfig(context, diskCachePath);
     }
 
     @Override

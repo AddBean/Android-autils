@@ -51,35 +51,46 @@ public class ABitmapUtils {
      * --------|非空，回调并加载位图；
      */
     public <T extends View> void load(T view, String uri) {
-        load(view, uri, (IBitmapCallback) null);
+        load(view, uri, null, null);
     }
 
     public <T extends View> void load(T view, String uri, String key) {
-        if (mBitmapConfig != null && key != null)
-            mBitmapConfig.setExtraKey(key);
-        load(view, uri, (IBitmapCallback) null);
+        load(view, uri, key, null);
     }
 
-    public <T extends View> void load(T view, String uri, IBitmapCallback mBitamCallback) {
+    public <T extends View> void load(T view, String uri, String key, IBitmapCallback mBitamCallback) {
+        if (mBitmapConfig != null && key != null)
+            mBitmapConfig.setExtraKey(key);
+        else
+            mBitmapConfig.setExtraKey("");
         Bitmap bmp1 = mBitmapCache.getBitmapFromMem(uri, mBitmapConfig);
-        if (mBitmapConfig != null)
+        if (mBitmapConfig != null && mBitamCallback != null)
             mBitmapConfig.setCallbackListener(mBitamCallback);
         if (bmp1 != null) {
             displayBitmap(view, bmp1);
             return;
         }
-        if (!loadTaskExist(view, uri, mBitmapConfig)) {
-            mBitmapCache.getBitampFromWeb(uri, mBitmapConfig, getNewBitmapTask(view, uri, mBitamCallback));
+        if (!loadTaskExist(view)) {
+            mBitmapCache.getBitampFromWeb(uri, mBitmapConfig, getNewBitmapTask(view, uri));
         }
     }
 
+    public void clearDiskCache() {
+        if (mBitmapConfig == null) return;
+        mBitmapConfig.getBitmapCache().clearDiskCache();
+    }
+
+    public void clearMemCache() {
+        if (mBitmapConfig == null) return;
+        mBitmapConfig.getBitmapCache().clearMemCache();
+    }
 
     public void setOnCallbackListener(IBitmapCallback bitmapCallback) {
         if (mBitmapConfig != null)
             mBitmapConfig.setCallbackListener(bitmapCallback);
     }
 
-    private <T extends View> BitmapLoadTask getNewBitmapTask(T view, String uri, IBitmapCallback mBitamCallback) {
+    private <T extends View> BitmapLoadTask getNewBitmapTask(T view, String uri) {
         BitmapLoadTask bitmapLoadTask = new BitmapLoadTask(view, uri, mBitmapConfig);
         BitmapDrawable drawable = new BitmapDrawable(null, bitmapLoadTask);
         if (view instanceof ImageView) {
@@ -88,7 +99,7 @@ public class ABitmapUtils {
         return bitmapLoadTask;
     }
 
-    private <T extends View> boolean loadTaskExist(T view, String uri, IBitmapConfig mBitmapConfig) {
+    private <T extends View> boolean loadTaskExist(T view) {
         Drawable drawable = ((ImageView) view).getDrawable();
         if (drawable == null)
             return false;
@@ -116,6 +127,7 @@ public class ABitmapUtils {
     }
 
     private String getDefaultDiskPath() {
+        if (mContext == null) return "/";
         return mContext.getCacheDir().getPath();
     }
 

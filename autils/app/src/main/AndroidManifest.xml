@@ -21,6 +21,7 @@
         <activity android:name=".demo.views.AWaveLayoutActivity" />
         <activity android:name=".demo.views.adynamic_fragment.ADynamicFragmentActivity" />
         <activity android:name=".demo.views.ATimeIconViewActivity"></activity>
+        <activity android:name=".demo.fromwork.HttpCacheDemoActivity"></activity>
     </application>
 
 </manifest>
