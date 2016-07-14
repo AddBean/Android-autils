@@ -76,7 +76,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 }
             }
         });
-        for (int i = 0; i < 1; i++) {
             mData.add(new ListItemEx(0, new MData("自定义控件")));
             mData.add(new ListItemEx(1, new MData("AListView")));
             mData.add(new ListItemEx(1, new MData("AWaveLayout")));
@@ -87,7 +86,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             mData.add(new ListItemEx(0, new MData("缓存框架")));
             mData.add(new ListItemEx(1, new MData("Bitmap")));
             mData.add(new ListItemEx(1, new MData("http")));
-        }
+
 
 
         list.setDate(mData);
