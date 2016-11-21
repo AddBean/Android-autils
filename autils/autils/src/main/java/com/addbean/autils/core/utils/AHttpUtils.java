@@ -36,6 +36,15 @@ public class AHttpUtils {
         this.mHttpCache.addStringToDisk(key, mHttpConfig, content);
     }
 
+    /**
+     * 删除缓存；
+     * @param key
+     * @return
+     */
+    public boolean remove(String key) {
+        return this.mHttpCache.remove(key, mHttpConfig);
+    }
+
     public void clearCache() {
         if (mHttpConfig == null) return;
         mHttpConfig.getHttpCache().clearDiskCache();

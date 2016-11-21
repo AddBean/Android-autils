@@ -21,6 +21,7 @@ public class HttpCacheDemoActivity extends Activity {
     private TextView mTextClear;
     private AHttpUtils mHttpUtils;
     private Context mContext;
+    private TextView mTextRewrite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class HttpCacheDemoActivity extends Activity {
         mContext = this;
         mTextRead = (TextView) findViewById(R.id.text_read);
         mTextWrite = (TextView) findViewById(R.id.text_write);
+        mTextRewrite = (TextView) findViewById(R.id.text_rewrite);
         mTextClear = (TextView) findViewById(R.id.text_clear);
         mHttpUtils = new AHttpUtils(this);
         bindEvent();
@@ -52,6 +54,13 @@ public class HttpCacheDemoActivity extends Activity {
                 } else {
                     Toast.makeText(mContext, "读取失败", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        mTextRewrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AnimUtils.ScaleAnim(view);
+                mHttpUtils.save("这是覆盖测试", "test_key");
             }
         });
         mTextClear.setOnClickListener(new View.OnClickListener() {

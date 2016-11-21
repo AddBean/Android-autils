@@ -98,6 +98,19 @@ public class HttpCache {
         return file;
     }
 
+    public boolean remove(String uri, IHttpConfig httpConfig) {
+        synchronized (mDiskCacheLock) {
+            if (!httpConfig.isDiskEnable())
+                return false;
+            try {
+                return mDiskLruCache.remove(MD5Utils.String2md5(uri));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
 
     public void addStringToDisk(String uri, IHttpConfig httpConfig, String content) {
         synchronized (mDiskCacheLock) {
@@ -123,7 +136,8 @@ public class HttpCache {
                                     outputStream.close();
                                 }
                             } else {
-                                mDiskLruCache.remove(uri);
+                                if (mDiskLruCache.remove(MD5Utils.String2md5(uri)))
+                                    addStringToDisk(uri, httpConfig, content);
                             }
                         } catch (Throwable e) {
                             e.printStackTrace();
