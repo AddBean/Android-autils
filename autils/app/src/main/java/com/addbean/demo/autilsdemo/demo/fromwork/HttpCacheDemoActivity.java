@@ -3,6 +3,7 @@ package com.addbean.demo.autilsdemo.demo.fromwork;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import com.addbean.autils.core.utils.AHttpUtils;
 import com.addbean.autils.utils.AnimUtils;
 import com.addbean.demo.autilsdemo.R;
+
+import java.io.File;
 
 /**
  * Created by AddBean on 2016/7/7.
@@ -33,7 +36,34 @@ public class HttpCacheDemoActivity extends Activity {
         mTextRewrite = (TextView) findViewById(R.id.text_rewrite);
         mTextClear = (TextView) findViewById(R.id.text_clear);
         mHttpUtils = new AHttpUtils(this);
+        mHttpUtils.getmHttpConfig().setDiskCachePath(getHttpCacheDir());
+        mHttpUtils.getmHttpConfig().setDiskEnable(true);
+        mHttpUtils.setHttpConfig(mHttpUtils.getmHttpConfig());
         bindEvent();
+    }
+    /**
+     * 文件下载/p2p缓存等的主目录；
+     *
+     * @return
+     */
+    public static String getBaseDir() {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "test/";
+        File file = new File(path);
+        if (!file.exists())
+            file.mkdirs();
+        return path;
+    }
+
+    /**
+     * 获取HTTP catch路径
+     * @return
+     */
+    public static String getHttpCacheDir() {
+        String path = getBaseDir()+ "http/";
+        File file = new File(path);
+        if (!file.exists())
+            file.mkdirs();
+        return path;
     }
 
     private void bindEvent() {

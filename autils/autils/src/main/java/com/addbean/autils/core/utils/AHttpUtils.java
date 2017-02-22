@@ -22,6 +22,10 @@ public class AHttpUtils {
         this.mHttpCache.initDiskCache(mHttpConfig);
     }
 
+    public void setHttpConfig(IHttpConfig httpConfig){
+        this.mHttpCache.initDiskCache(httpConfig);
+    }
+
     public String get(String url) {
         return this.mHttpCache.getStringFromDisk(url, mHttpConfig);
     }

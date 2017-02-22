@@ -41,13 +41,13 @@ public class HttpCache {
                 long availableSpace = OtherUtils.getAvailableSpace(diskCacheDir);
                 long diskCacheSize = httpConfig.getDiskCacheSize();
                 diskCacheSize = availableSpace > diskCacheSize ? diskCacheSize : availableSpace;
-                ALog.debug("diskHttpCacheSize:" + diskCacheSize);
+                ALog.debug("diskCacheDir:"+httpConfig.getDiskCachePath()+" diskHttpCacheSize:" + diskCacheSize);
                 try {
                     mDiskLruCache = DiskLruCache.open(diskCacheDir, 1, 1, diskCacheSize);
-                    Log.e(TAG, "create disk cache success");
+                    ALog.debug("create disk cache success");
                 } catch (Throwable e) {
                     mDiskLruCache = null;
-                    Log.e(TAG, "create disk cache error");
+                    ALog.debug("create disk cache error");
                 }
             }
         }
